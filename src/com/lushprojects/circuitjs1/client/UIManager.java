@@ -70,8 +70,12 @@ public class UIManager {
 	int framerate = 0, steprate = 0;
 	boolean needsRepaint;
 	boolean hideInfoBox;
-	boolean hideMenu;
 	String lastCursorStyle;
+	boolean hideMenu;
+	boolean hideSidebar;
+	boolean hideToolbar;
+	int sidebarWidth;
+	int toolbarHeight;
 
 	Toolbar toolbar;
 	SubcircuitBar subcircuitBar;
@@ -82,6 +86,9 @@ public class UIManager {
 	Vector<CheckboxMenuItem> mainMenuItems = new Vector<CheckboxMenuItem>();
 	Vector<String> mainMenuItemNames = new Vector<String>();
 	Element sidePanelCheckboxLabel;
+	Element sidePanelCheckbox;
+	Element topPanelCheckbox;
+	Element topPanelCheckboxLabel;
 
 	LoadFile loadFileInput;
 	Frame iFrame;
@@ -97,7 +104,7 @@ public class UIManager {
 	int canvasWidth, canvasHeight;
 
 	static final int MENUBARHEIGHT = 30;
-	static final int TOOLBARHEIGHT = 40;
+	static int TOOLBARHEIGHT = 40;
 	static int VERTICALPANELWIDTH = 166; // default
 	long lastResizeTime;
 
@@ -112,11 +119,19 @@ public class UIManager {
 		boolean euroRes = false;
 		boolean usRes = false;
 		boolean running = true;
-		boolean hideSidebar = false;
 		boolean noEditing = false;
 		boolean mouseWheelEdit = false;
 
-		hideMenu = false;
+		toolbarHeight = TOOLBARHEIGHT;
+		if (!app.kioskMode) {
+			hideMenu = false;
+			hideSidebar = false;
+			hideToolbar = false;
+		} else {
+			hideMenu = true;
+			hideSidebar = true;
+			hideToolbar = true;
+		}
 
 		QueryParameters qp = new QueryParameters();
 		String positiveColor = null;
@@ -134,8 +149,8 @@ public class UIManager {
 			euroGates = qp.getBooleanValue("IECGates", getOptionFromStorage("euroGates", Locale.weAreInGermany()));
 			usRes = qp.getBooleanValue("usResistors", false);
 			running = qp.getBooleanValue("running", true);
-			hideSidebar = qp.getBooleanValue("hideSidebar", false);
-			hideMenu = qp.getBooleanValue("hideMenu", false);
+			hideSidebar = qp.getBooleanValue("hideSidebar", hideSidebar);
+			hideMenu = qp.getBooleanValue("hideMenu", hideMenu);
 			printable = qp.getBooleanValue("whiteBackground", getOptionFromStorage("whiteBackground", false));
 			convention = qp.getBooleanValue("conventionalCurrent", getOptionFromStorage("conventionalCurrent", true));
 			noEditing = !qp.getBooleanValue("editable", true);
@@ -175,19 +190,20 @@ public class UIManager {
 			VERTICALPANELWIDTH = 166;
 		if (VERTICALPANELWIDTH < 128)
 			VERTICALPANELWIDTH = 128;
+		sidebarWidth = VERTICALPANELWIDTH;
 
 		verticalPanel = new VerticalPanel();
 
 		verticalPanel.getElement().addClassName("verticalPanel");
 		verticalPanel.getElement().setId("painel");
-		Element sidePanelCheckbox = DOM.createInputCheck();
+		sidePanelCheckbox = DOM.createInputCheck();
 		sidePanelCheckboxLabel = DOM.createLabel();
 		sidePanelCheckboxLabel.addClassName("triggerLabel");
 		sidePanelCheckbox.setId("trigger");
 		sidePanelCheckboxLabel.setAttribute("for", "trigger");
 		sidePanelCheckbox.addClassName("trigger");
-		Element topPanelCheckbox = DOM.createInputCheck();
-		Element topPanelCheckboxLabel = DOM.createLabel();
+		topPanelCheckbox = DOM.createInputCheck();
+		topPanelCheckboxLabel = DOM.createLabel();
 		topPanelCheckbox.setId("toptrigger");
 		topPanelCheckbox.addClassName("toptrigger");
 		topPanelCheckboxLabel.addClassName("toptriggerlabel");
@@ -249,17 +265,23 @@ public class UIManager {
 		toolbar = new Toolbar();
 		toolbar.setEuroResistors(euroSetting);
 		MenuBar menuBar = menus.menuBar;
-		if (!hideMenu)
-			layoutPanel.addNorth(menuBar, MENUBARHEIGHT);
+		layoutPanel.addNorth(menuBar, MENUBARHEIGHT);
+		layoutPanel.setWidgetHidden(menuBar, hideMenu);
 
+		layoutPanel.addEast(verticalPanel, VERTICALPANELWIDTH);
+		layoutPanel.setWidgetHidden(verticalPanel, hideSidebar);
 		if (hideSidebar)
 			VERTICALPANELWIDTH = 0;
 		else {
 			DOM.appendChild(layoutPanel.getElement(), sidePanelCheckbox);
 			DOM.appendChild(layoutPanel.getElement(), sidePanelCheckboxLabel);
-			layoutPanel.addEast(verticalPanel, VERTICALPANELWIDTH);
 		}
 		layoutPanel.addNorth(toolbar, TOOLBARHEIGHT);
+		layoutPanel.setWidgetHidden(toolbar, hideToolbar);
+		if (hideMenu) {
+			setHandleDisplay(topPanelCheckbox, false);
+			setHandleDisplay(topPanelCheckboxLabel, false);
+		}
 		menuBar.getElement().insertFirst(menuBar.getElement().getChild(1));
 		menuBar.getElement().getFirstChildElement().setAttribute("onclick",
 				"document.getElementsByClassName('toptrigger')[0].checked = false");
@@ -916,6 +938,36 @@ public class UIManager {
 	void setToolbar() {
 		layoutPanel.setWidgetHidden(toolbar, !menus.toolbarCheckItem.getState());
 		setCanvasSize();
+	}
+
+	void setKioskMode(boolean k) {
+		app.kioskMode = k;
+		hideMenu = k;
+		hideSidebar = k;
+		hideToolbar = k;
+		layoutPanel.setWidgetHidden(menus.menuBar, k);
+		layoutPanel.setWidgetHidden(verticalPanel, k);
+		layoutPanel.setWidgetHidden(toolbar, k);
+		VERTICALPANELWIDTH = k ? 0 : sidebarWidth;
+		TOOLBARHEIGHT = k ? 0 : toolbarHeight;
+		setSlideHandlesVisible(!k);
+		setCanvasSize();
+	}
+
+	void setSlideHandlesVisible(boolean visible) {
+		setHandleDisplay(sidePanelCheckbox, visible);
+		setHandleDisplay(sidePanelCheckboxLabel, visible);
+		setHandleDisplay(topPanelCheckbox, visible);
+		setHandleDisplay(topPanelCheckboxLabel, visible);
+	}
+
+	void setHandleDisplay(Element e, boolean visible) {
+		if (e == null)
+			return;
+		if (visible)
+			e.getStyle().clearProperty("display");
+		else
+			e.getStyle().setProperty("display", "none");
 	}
 
 	void updateToolbar() {
