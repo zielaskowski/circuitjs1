@@ -68,6 +68,7 @@ public class CirSim implements NativePreviewHandler {
 
 	double minFrameRate = 20;
 	boolean developerMode;
+	public boolean kioskMode =false;
 
 	static final int HINT_LC = 1;
 	static final int HINT_RC = 2;

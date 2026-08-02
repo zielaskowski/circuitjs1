@@ -6,6 +6,15 @@
   <em>Electronic Circuit Simulator in the Browser</em>
 </p>
 
+this fork purpose is to refresh gradle installation to newest version of toolchains as of 2026.
+
+## kioskMode
+
+Added runtime option `CircuitJS1.setKioskMode(true|false)` to switch to kioskMode
+(equivalent to ?hideMenu=true&hideSidebar=true) but in runtime without
+interrupting simulation. URL parameter have precedence over `setKioskMode` during init
+and are fully compatible backward.
+
 ## Introduction
 
 CircuitJS1 is an electronic circuit simulator that runs in the browser. It was originally written by Paul Falstad as a Java Applet. It was adapted by Iain Sharp to run in the browser using GWT.
