@@ -6,6 +6,8 @@
   <em>Electronic Circuit Simulator in the Browser</em>
 </p>
 
+this fork purpose is to refresh gradle installation to newest version of toolchains as of 2026.
+
 ## Introduction
 
 CircuitJS1 is an electronic circuit simulator that runs in the browser. It was originally written by Paul Falstad as a Java Applet. It was adapted by Iain Sharp to run in the browser using GWT.
@@ -124,7 +126,7 @@ Just for reference the files should look like this
 
 *(replace the podman command with docker if you prefere docker)*
 
-- To build Docker image using podman: 
+- To build Docker image using podman:
 
 ```
 podman build -f circuitjs1.Containerfile -t circuitjs1:latest
@@ -143,7 +145,7 @@ CircuitJS1 should be accessable at: http://localhost:8000/circuitjs.html
 
 (replace the podman command with docker if you prefere docker)
 
-- To build the development Docker image using podman: 
+- To build the development Docker image using podman:
 
 ```
 podman build -f dev-start.Containerfile -t circuitjs1-dev:latest
