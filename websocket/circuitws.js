@@ -1,4 +1,4 @@
-class CircuitWS {
+export class CircuitWS {
   constructor(iframe) {
     this._iframe = iframe;
     this._autoshutoff = false;
