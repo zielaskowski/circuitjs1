@@ -13,10 +13,14 @@
 
 // 1. Run Gradle build with verbose output:
 // gradle gwtCompile --console verbose --info
+// 1.1 output preety printed (readable) js files
+// gradle gwtCompile -Pdev
 // 2. Create the web-site directory from the build files:
 // gradle makeSite --console verbose --info
 // 3. To cleanup and remove the target, build and site directories
 // gradle cleanUp
+// 4. To clean gradle cache
+// gradle clean
 
 
 
