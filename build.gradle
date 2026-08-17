@@ -97,6 +97,7 @@ tasks.register('makeSite', Copy) {
         include '**/*.html'
         include '**/*.css'
         include 'canvas2svg.js'
+        include 'service-worker.js'
         include 'lz-string.min.js'
         include '**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg'
         include '**/*.txt', '**/*.xml'  // e.g. setuplist.txt if here
