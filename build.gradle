@@ -68,20 +68,19 @@ File buildDir = file('buildDir')
 //        that is ran, will create these. See:
 //        https://github.com/jiakuan/gwt-gradle-plugin/issues/25
 //---------------------------------------------------------------------
-task cleanUp {
+task cleanUp(type: Delete) {
     group 'circuitjs1'
     description 'Delete Gradle created ./build and ./site directories.'
-    doLast {
-        delete {
+
+    delete buildDir, siteDir
+
+    doFirst {
             println "\nCleaning up Gradle built directories and artifacts..."
             println " - Deleting build directory:  $buildDir"
-            delete buildDir
             println " - Deleting site directory:   $siteDir"
-            delete siteDir
-            //println " - Deleting target directory: $siteDir"
-            //delete targetDir
+    }
+    doLast{
             println "Done\n"
-        }
     }
 }
 
@@ -160,5 +159,6 @@ gwt {
     maxHeapSize = "1024M"               // -Xmx1024M
     logLevel = 'INFO'                   // -logLevel INFO  / [ERROR,WARN,INFO,TRACE,DEBUG,SPAM,ALL]
     modules = ['com.lushprojects.circuitjs1.circuitjs1']
+        style = project.hasProperty('dev') ? 'DETAILED' : 'OBFUSCATED'
 }
 
