@@ -54,6 +54,7 @@ version = '9.7.0'
 // [1] https://docs.gradle.org/current/userguide/working_with_files.html
 
 File siteDir = file('site')
+File buildDir = file('buildDir')
 
 //---------------------------------------------------------------------
 // Custom Tasks (for "circuitjs1" project)
