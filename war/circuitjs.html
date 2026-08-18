@@ -165,16 +165,25 @@
 		<iframe src="javascript:''" id="__gwt_historyFrame" style="width: 0; height: 0; border: 0"></iframe>
 
 		<script>
+			// if circuitjs is called from other page, likely this serviceWorker wont be
+			// aligned with external page folder structure,
+			// also, it will fight over shared cache...so skip
 			if ("serviceWorker" in navigator) {
-				window.addEventListener("load", () => {
-					navigator.serviceWorker
-						.register("service-worker.js")
-						.then((registration) => {
-							console.log("Service Worker registered with scope:", registration.scope);
-						})
-						.catch((error) => {
-							console.error("Service Worker registration failed:", error);
+				navigator.serviceWorker.getRegistrations().then((serviceWorkers) => {
+					if (serviceWorkers.length > 0) {
+						console.log("another serviceWorker exists. skipping");
+					} else {
+						window.addEventListener("load", () => {
+							navigator.serviceWorker
+								.register("service-worker.js")
+								.then((registration) => {
+									console.log("Service Worker registered with scope:", registration.scope);
+								})
+								.catch((error) => {
+									console.error("Service Worker registration failed:", error);
+								});
 						});
+					}
 				});
 			}
 		</script>
