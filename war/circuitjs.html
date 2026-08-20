@@ -166,25 +166,25 @@
 
 		<script>
 			// if circuitjs is called from other page, likely this serviceWorker wont be
-			// aligned with folder structure skip
-			(function () {
-				if ("serviceWorker" in navigator) {
-					if (navigator.serviceWorker.controller) {
-						console.log("Service worker already registered");
-						return;
+			// aligned with external page folder structure, so skip
+			if ("serviceWorker" in navigator) {
+				navigator.serviceWorker.getRegistrations("/").then((serviceWorkers) => {
+					if (serviceWorkers.length > 0) {
+						console.log("another serviceWorker exists. skipping");
+					} else {
+						window.addEventListener("load", () => {
+							navigator.serviceWorker
+								.register("service-worker.js")
+								.then((registration) => {
+									console.log("Service Worker registered with scope:", registration.scope);
+								})
+								.catch((error) => {
+									console.error("Service Worker registration failed:", error);
+								});
+						});
 					}
-					window.addEventListener("load", () => {
-						navigator.serviceWorker
-							.register("service-worker.js")
-							.then((registration) => {
-								console.log("Service Worker registered with scope:", registration.scope);
-							})
-							.catch((error) => {
-								console.error("Service Worker registration failed:", error);
-							});
-					});
-				}
-			})();
+				});
+			}
 		</script>
 	</body>
 </html>
