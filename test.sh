@@ -21,7 +21,7 @@ echo "=== Using: $GRADLE ==="
 
 echo "=== Compiling GWT ==="
 cd "$DIR"
-$GRADLE compileGwt makeSite --console verbose
+$GRADLE gwtCompile makeSite -Pdev --console verbose
 
 echo ""
 echo "=== Starting server on http://localhost:$PORT/circuitjs.html ==="
