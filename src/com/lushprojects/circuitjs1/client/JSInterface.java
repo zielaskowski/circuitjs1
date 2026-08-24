@@ -81,6 +81,10 @@ public class JSInterface {
 		app.sim.maxTimeStep = app.sim.timeStep = ts;
 	}
 
+	void switchColorTheme() {
+		app.ui.switchColorTheme();
+	}
+
 	native void setupJSInterface() /*-{
 	var that = this;
 	$wnd.CircuitJS1 = {
@@ -96,7 +100,8 @@ public class JSInterface {
 	    getElements: $entry(function() { return that.@com.lushprojects.circuitjs1.client.JSInterface::getJSElements()(); } ),
 	    getCircuitAsSVG: $entry(function() { return that.@com.lushprojects.circuitjs1.client.JSInterface::doExportAsSVGFromAPI()(); } ),
 	    exportCircuit: $entry(function() { return that.@com.lushprojects.circuitjs1.client.JSInterface::dumpCircuit()(); } ),
-	    importCircuit: $entry(function(circuit, subcircuitsOnly) { return that.@com.lushprojects.circuitjs1.client.JSInterface::importCircuitFromText(Ljava/lang/String;Z)(circuit, subcircuitsOnly); })
+	    importCircuit: $entry(function(circuit, subcircuitsOnly) { return that.@com.lushprojects.circuitjs1.client.JSInterface::importCircuitFromText(Ljava/lang/String;Z)(circuit, subcircuitsOnly); }),
+	    switchColorTheme: $entry(function() { return that.@com.lushprojects.circuitjs1.client.JSInterface::switchColorTheme()(); })
 	};
 	var hook = $wnd.oncircuitjsloaded;
 	if (hook)
