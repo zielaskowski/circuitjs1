@@ -43,6 +43,7 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 		<nature>com.google.gwt.eclipse.core.gwtNature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>com.gwtplugins.gwt.eclipse.core.gwtNature</nature>
@@ -50,7 +51,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1787689738581</id>
+			<id>1787609273020</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
