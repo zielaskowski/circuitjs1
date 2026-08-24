@@ -894,6 +894,16 @@ public class UIManager {
 		return Color.black;
 	}
 
+	void switchColorTheme() {
+		boolean p = !menus.printableCheckItem.getState();
+		menus.printableCheckItem.setState(p);
+		int i;
+		for (i = 0; i < scopeManager.scopeCount; i++)
+			scopeManager.scopes[i].setRect(scopeManager.scopes[i].rect);
+		setOptionInStorage("whiteBackground", p);
+		updateCircuit();
+	}
+
 	// ---- UI Controls ----
 
 	void setPowerBarEnable() {
