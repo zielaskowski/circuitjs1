@@ -1,3 +1,8 @@
+#nvim jdtls plugin
+bin
+
+
+
 #GWT cache
 gwt-unitCache/
 war/circuitjs1/
@@ -13,6 +18,9 @@ circuitjs1.tar.gz
 
 # Editor configurations
 .vscode
+
+# python venv
+.venv
 
 # Windows image file caches
 Thumbs.db
@@ -73,3 +81,12 @@ Temporary Items
 *.tgz
 
 /.apt_generated/
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Ignore Kotlin plugin data
+.kotlin
