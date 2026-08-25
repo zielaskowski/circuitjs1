@@ -5,52 +5,83 @@ import com.google.gwt.core.client.JsArray;
 
 public class JSInterface {
 
-    CirSim app;
+	CirSim app;
 
-    JSInterface(CirSim app) {
-	this.app = app;
-    }
-
-    void setExtVoltage(String name, double v) {
-	int i;
-	for (i = 0; i != app.elmList.size(); i++) {
-	    CircuitElm ce = app.getElm(i);
-	    if (ce instanceof ExtVoltageElm) {
-		ExtVoltageElm eve = (ExtVoltageElm) ce;
-		if (eve.getName().equals(name))
-		    eve.setVoltage(v);
-	    }
+	JSInterface(CirSim app) {
+		this.app = app;
 	}
-    }
 
-    native JsArray<JavaScriptObject> getJSArray() /*-{ return []; }-*/;
-
-    JsArray<JavaScriptObject> getJSElements() {
-	int i;
-	JsArray<JavaScriptObject> arr = getJSArray();
-	for (i = 0; i != app.elmList.size(); i++) {
-	    CircuitElm ce = app.getElm(i);
-	    ce.addJSMethods();
-	    arr.push(ce.getJavaScriptObject());
+	void setExtVoltage(String name, double v) {
+		int i;
+		for (i = 0; i != app.elmList.size(); i++) {
+			CircuitElm ce = app.getElm(i);
+			if (ce instanceof ExtVoltageElm) {
+				ExtVoltageElm eve = (ExtVoltageElm) ce;
+				if (eve.getName().equals(name))
+					eve.setVoltage(v);
+			}
+		}
 	}
-	return arr;
-    }
 
-    double getLabeledNodeVoltage(String name) { return app.sim.getLabeledNodeVoltage(name); }
+	native JsArray<JavaScriptObject> getJSArray() /*-{ return []; }-*/;
 
-    // Delegate methods for JSNI access
-    void setSimRunning(boolean run) { app.setSimRunning(run); }
-    boolean simIsRunning() { return app.simIsRunning(); }
-    void doExportAsSVGFromAPI() { app.imageExporter.doExportAsSVGFromAPI(); }
-    String dumpCircuit() { return app.dumpCircuit(); }
-    void importCircuitFromText(String t, boolean s) { app.importCircuitFromText(t, s); }
-    double getTime() { return app.sim.t; }
-    double getTimeStep() { return app.sim.timeStep; }
-    void setTimeStep(double ts) { app.sim.timeStep = ts; }
-    double getMaxTimeStep() { return app.sim.maxTimeStep; }
-    void setMaxTimeStep(double ts) { app.sim.maxTimeStep = app.sim.timeStep = ts; }
+	JsArray<JavaScriptObject> getJSElements() {
+		int i;
+		JsArray<JavaScriptObject> arr = getJSArray();
+		for (i = 0; i != app.elmList.size(); i++) {
+			CircuitElm ce = app.getElm(i);
+			ce.addJSMethods();
+			arr.push(ce.getJavaScriptObject());
+		}
+		return arr;
+	}
 
-    native void setupJSInterface() /*-{
+	double getLabeledNodeVoltage(String name) {
+		return app.sim.getLabeledNodeVoltage(name);
+	}
+
+	// Delegate methods for JSNI access
+	void setSimRunning(boolean run) {
+		app.setSimRunning(run);
+	}
+
+	boolean simIsRunning() {
+		return app.simIsRunning();
+	}
+
+	void doExportAsSVGFromAPI() {
+		app.imageExporter.doExportAsSVGFromAPI();
+	}
+
+	String dumpCircuit() {
+		return app.dumpCircuit();
+	}
+
+	void importCircuitFromText(String t, boolean s) {
+		app.importCircuitFromText(t, s);
+	}
+
+	double getTime() {
+		return app.sim.t;
+	}
+
+	double getTimeStep() {
+		return app.sim.timeStep;
+	}
+
+	void setTimeStep(double ts) {
+		app.sim.timeStep = ts;
+	}
+
+	double getMaxTimeStep() {
+		return app.sim.maxTimeStep;
+	}
+
+	void setMaxTimeStep(double ts) {
+		app.sim.maxTimeStep = app.sim.timeStep = ts;
+	}
+
+	native void setupJSInterface() /*-{
 	var that = this;
 	$wnd.CircuitJS1 = {
 	    setSimRunning: $entry(function(run) { that.@com.lushprojects.circuitjs1.client.JSInterface::setSimRunning(Z)(run); } ),
@@ -72,25 +103,25 @@ public class JSInterface {
 	    hook($wnd.CircuitJS1);
     }-*/;
 
-    native void callUpdateHook() /*-{
+	native void callUpdateHook() /*-{
 	var hook = $wnd.CircuitJS1.onupdate;
 	if (hook)
 	    hook($wnd.CircuitJS1);
     }-*/;
 
-    native void callAnalyzeHook() /*-{
+	native void callAnalyzeHook() /*-{
 	var hook = $wnd.CircuitJS1.onanalyze;
 	if (hook)
 	    hook($wnd.CircuitJS1);
     }-*/;
 
-    native void callTimeStepHook() /*-{
+	native void callTimeStepHook() /*-{
 	var hook = $wnd.CircuitJS1.ontimestep;
 	if (hook)
 	    hook($wnd.CircuitJS1);
     }-*/;
 
-    native void callSVGRenderedHook(String svgData) /*-{
+	native void callSVGRenderedHook(String svgData) /*-{
 	var hook = $wnd.CircuitJS1.onsvgrendered;
 	if (hook)
 	    hook($wnd.CircuitJS1, svgData);
