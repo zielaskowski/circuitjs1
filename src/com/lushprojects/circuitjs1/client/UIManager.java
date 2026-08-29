@@ -894,13 +894,12 @@ public class UIManager {
 		return Color.black;
 	}
 
-	void switchColorTheme() {
-		boolean p = !menus.printableCheckItem.getState();
-		menus.printableCheckItem.setState(p);
+	void switchColorTheme(boolean color) {
+		menus.printableCheckItem.setState(color);
 		int i;
 		for (i = 0; i < scopeManager.scopeCount; i++)
 			scopeManager.scopes[i].setRect(scopeManager.scopes[i].rect);
-		setOptionInStorage("whiteBackground", p);
+		setOptionInStorage("whiteBackground", color);
 		updateCircuit();
 	}
 
