@@ -29,7 +29,6 @@ public class Toolbar extends FlowPanel {
 		// Set the overall style of the toolbar
 		Style style = getElement().getStyle();
 		style.setPadding(2, Style.Unit.PX);
-		// style.setBackgroundColor("#f8f8f8");
 		style.setBorderWidth(1, Style.Unit.PX);
 		style.setBorderStyle(Style.BorderStyle.SOLID);
 		style.setBorderColor("#ccc");
@@ -105,7 +104,6 @@ public class Toolbar extends FlowPanel {
 		// Style the icon button
 		Style style = iconLabel.getElement().getStyle();
 		style.setFontSize(24, Style.Unit.PX);
-		// style.setColor("#333");
 		style.setPadding(1, Style.Unit.PX);
 		style.setMarginRight(5, Style.Unit.PX);
 		style.setCursor(Style.Cursor.POINTER);
@@ -246,7 +244,6 @@ public class Toolbar extends FlowPanel {
 
 			// Style the variant button
 			Style variantStyle = variantButton.getElement().getStyle();
-			// variantStyle.setColor("#333");
 			// variantStyle.setPadding(5, Style.Unit.PX);
 			variantStyle.setCursor(Style.Cursor.POINTER);
 			variantStyle.setProperty("touchAction", "none");
@@ -327,7 +324,6 @@ public class Toolbar extends FlowPanel {
 	private void styleModeLabel(Label label) {
 		Style style = label.getElement().getStyle();
 		style.setFontSize(16, Style.Unit.PX);
-		// style.setColor("#333");
 		style.setPaddingRight(10, Style.Unit.PX);
 		style.setProperty("whiteSpace", "nowrap");
 	}
@@ -335,7 +331,6 @@ public class Toolbar extends FlowPanel {
 	public void highlightButton(String key) {
 		// Deactivate the currently active button
 		if (activeButton != null) {
-			// activeButton.getElement().getStyle().setColor("#333"); // Reset color
 			activeButton.getElement().getStyle().clearColor();
 			activeButton.getElement().getStyle().setBackgroundColor(null);
 		}
@@ -344,7 +339,6 @@ public class Toolbar extends FlowPanel {
 		Label newActiveButton = highlightableButtons.get(key);
 		if (newActiveButton != null) {
 			newActiveButton.getElement().getStyle().setColor("#007bff"); // Active color
-			// newActiveButton.getElement().getStyle().setBackgroundColor("#e6f7ff");
 			activeButton = newActiveButton;
 		}
 	}
