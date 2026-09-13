@@ -6,7 +6,17 @@
   <em>Electronic Circuit Simulator in the Browser</em>
 </p>
 
-this fork purpose is to refresh gradle installation to newest version of toolchains as of 2026.
+## fork purpose
+
+This fork purpose is to refresh gradle installation to newest version of toolchains as of 2026
+and add these features:
+
+### switch color theme
+
+Added option `CircuitJS1.setColorTheme("lighe"|"dark")` to switch color theme.
+(something similar to *white background* in *option* menu) but including all
+elements of UI.'white background' in *option* menu has precedence before
+`setColorTheme` is fully compatible backward.
 
 ## Introduction
 
@@ -126,7 +136,7 @@ Just for reference the files should look like this
 
 *(replace the podman command with docker if you prefere docker)*
 
-- To build Docker image using podman:
+- To build Docker image using podman: 
 
 ```
 podman build -f circuitjs1.Containerfile -t circuitjs1:latest
@@ -145,7 +155,7 @@ CircuitJS1 should be accessable at: http://localhost:8000/circuitjs.html
 
 (replace the podman command with docker if you prefere docker)
 
-- To build the development Docker image using podman:
+- To build the development Docker image using podman: 
 
 ```
 podman build -f dev-start.Containerfile -t circuitjs1-dev:latest
