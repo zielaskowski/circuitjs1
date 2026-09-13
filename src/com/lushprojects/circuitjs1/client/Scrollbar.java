@@ -22,6 +22,8 @@ package com.lushprojects.circuitjs1.client;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -60,6 +62,13 @@ public class Scrollbar extends Composite
 	static int BARWIDTH = 3;
 	static int BARMARGIN = 3;
 
+	static String scrollbarBackground = "white";
+	static String scrollbarArrow = "black";
+	static String scrollbarArrowDisabled = "lightgray";
+	static String scrollbarTrack = "gray";
+	static String scrollbarThumb = "red";
+	static String scrollbarThumbOutline = "#212529";
+
 	Canvas can;
 	VerticalPanel pan;
 	Context2d g;
@@ -72,6 +81,13 @@ public class Scrollbar extends Composite
 	Command command = null;
 	CircuitElm attachedElm = null;
 	int VERTICALPANELWIDTH;
+
+	static List<Scrollbar> scrollbars = new ArrayList<Scrollbar>();
+
+	static void redrawAll() {
+		for (Scrollbar sb : scrollbars)
+			sb.draw();
+	}
 
 	public Scrollbar(int orientation, int value, int visible, int minimum, int maximum) {
 		VERTICALPANELWIDTH = UIManager.VERTICALPANELWIDTH;
@@ -86,7 +102,7 @@ public class Scrollbar extends Composite
 		can.setCoordinateSpaceHeight(SCROLLHEIGHT);
 		pan.add(can);
 		g = can.getContext2d();
-		g.setFillStyle("#ffffff");
+		g.setFillStyle(scrollbarBackground);
 		can.addClickHandler(this);
 		can.addMouseDownHandler(this);
 		can.addMouseUpHandler(this);
@@ -104,6 +120,7 @@ public class Scrollbar extends Composite
 
 		this.draw();
 		initWidget(pan);
+		scrollbars.add(this);
 	}
 
 	public Scrollbar(int orientation, int value, int visible, int minimum, int maximum, Command cmd, CircuitElm e) {
@@ -119,10 +136,11 @@ public class Scrollbar extends Composite
 
 	void draw() {
 		if (enabled)
-			g.setStrokeStyle("#000000");
+			g.setStrokeStyle(scrollbarArrow);
 		else
-			g.setStrokeStyle("lightgrey");
+			g.setStrokeStyle(scrollbarArrowDisabled);
 		g.setLineWidth(1.0);
+		g.setFillStyle(scrollbarBackground);
 		g.fillRect(0, 0, VERTICALPANELWIDTH, SCROLLHEIGHT);
 		g.beginPath();
 		g.moveTo(HMARGIN + SCROLLHEIGHT - 3, 0);
@@ -133,7 +151,7 @@ public class Scrollbar extends Composite
 		g.lineTo(VERTICALPANELWIDTH - HMARGIN - SCROLLHEIGHT + 3, SCROLLHEIGHT);
 		g.stroke();
 		if (enabled)
-			g.setStrokeStyle("grey");
+			g.setStrokeStyle(scrollbarTrack);
 		g.beginPath();
 		g.setLineWidth(5.0);
 		g.moveTo(HMARGIN + SCROLLHEIGHT + BARMARGIN, SCROLLHEIGHT / 2);
@@ -146,12 +164,12 @@ public class Scrollbar extends Composite
 			if (attachedElm != null && attachedElm.needsHighlight())
 				g.setStrokeStyle(CircuitElm.selectColor.getHexValue());
 			else
-				g.setStrokeStyle("red");
+				g.setStrokeStyle(scrollbarThumb);
 			g.beginPath();
 			g.moveTo(HMARGIN + SCROLLHEIGHT + BARMARGIN, SCROLLHEIGHT / 2);
 			g.lineTo(p, SCROLLHEIGHT / 2);
 			g.stroke();
-			g.setStrokeStyle("#000000");
+			g.setStrokeStyle(scrollbarThumbOutline);
 			// g.beginPath();
 			// g.moveTo(p, 0);
 			// g.lineTo(p, SCROLLHEIGHT);
@@ -359,4 +377,21 @@ public class Scrollbar extends Composite
 		doMouseDown(t.getRelativeX(getElement()), false);
 	}
 
+	public static void setTheme(boolean light) {
+		if (light) {
+			scrollbarBackground = "white";
+			scrollbarArrow = "black";
+			scrollbarArrowDisabled = "lightgray";
+			scrollbarTrack = "gray";
+			scrollbarThumb = "red";
+			scrollbarThumbOutline = "#212529";
+		} else {
+			scrollbarBackground = "#212529";
+			scrollbarArrow = "white";
+			scrollbarArrowDisabled = "gray";
+			scrollbarTrack = "lightgray";
+			scrollbarThumb = "red";
+			scrollbarThumbOutline = "white";
+		}
+	}
 }

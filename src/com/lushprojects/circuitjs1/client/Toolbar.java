@@ -29,7 +29,7 @@ public class Toolbar extends FlowPanel {
 		// Set the overall style of the toolbar
 		Style style = getElement().getStyle();
 		style.setPadding(2, Style.Unit.PX);
-		style.setBackgroundColor("#f8f8f8");
+		// style.setBackgroundColor("#f8f8f8");
 		style.setBorderWidth(1, Style.Unit.PX);
 		style.setBorderStyle(Style.BorderStyle.SOLID);
 		style.setBorderColor("#ccc");
@@ -105,7 +105,7 @@ public class Toolbar extends FlowPanel {
 		// Style the icon button
 		Style style = iconLabel.getElement().getStyle();
 		style.setFontSize(24, Style.Unit.PX);
-		style.setColor("#333");
+		// style.setColor("#333");
 		style.setPadding(1, Style.Unit.PX);
 		style.setMarginRight(5, Style.Unit.PX);
 		style.setCursor(Style.Cursor.POINTER);
@@ -115,14 +115,14 @@ public class Toolbar extends FlowPanel {
 
 		// Add hover effect for the button
 		iconLabel.addMouseOverHandler(event -> iconLabel.getElement().getStyle().setColor("#007bff"));
-		iconLabel.addMouseOutHandler(event -> iconLabel.getElement().getStyle().setColor("#333"));
+		iconLabel.addMouseOutHandler(event -> iconLabel.getElement().getStyle().clearColor());
 
 		// Add a click handler to perform the action
 		iconLabel.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				// un-highlight
-				iconLabel.getElement().getStyle().setColor("#333");
+				iconLabel.getElement().getStyle().clearColor();
 				if (iconLabel == activeButton) {
 					new MyCommand("main", "Select").execute();
 					activeButton = null;
@@ -231,7 +231,6 @@ public class Toolbar extends FlowPanel {
 		Style paletteStyle = paletteContainer.getElement().getStyle();
 		paletteStyle.setPosition(Style.Position.ABSOLUTE);
 		paletteStyle.setZIndex(1000); // High z-index to appear on top
-		paletteStyle.setBackgroundColor("#ffffff");
 		paletteStyle.setBorderWidth(1, Style.Unit.PX);
 		paletteStyle.setBorderColor("#ccc");
 		paletteStyle.setBorderStyle(Style.BorderStyle.SOLID);
@@ -247,7 +246,7 @@ public class Toolbar extends FlowPanel {
 
 			// Style the variant button
 			Style variantStyle = variantButton.getElement().getStyle();
-			variantStyle.setColor("#333");
+			// variantStyle.setColor("#333");
 			// variantStyle.setPadding(5, Style.Unit.PX);
 			variantStyle.setCursor(Style.Cursor.POINTER);
 			variantStyle.setProperty("touchAction", "none");
@@ -282,11 +281,15 @@ public class Toolbar extends FlowPanel {
 
 			// while hovering over a variant button, tell the user how to use it
 			variantButton.addMouseOverHandler(event -> {
+				variantButton.getElement().getStyle().setColor("#007bff");
 				String label = app.getLabelTextForClass(command.getItemName());
 				if (label != null)
 					setModeLabel(label + Locale.LS(": Drag And Drop To Create"));
 			});
-			variantButton.addMouseOutHandler(event -> UIManager.theUI.updateToolbar());
+			variantButton.addMouseOutHandler(event -> {
+				variantButton.getElement().getStyle().clearColor();
+				UIManager.theUI.updateToolbar();
+			});
 
 			// Append the variant button to the palette container
 			paletteContainer.add(variantButton);
@@ -324,7 +327,7 @@ public class Toolbar extends FlowPanel {
 	private void styleModeLabel(Label label) {
 		Style style = label.getElement().getStyle();
 		style.setFontSize(16, Style.Unit.PX);
-		style.setColor("#333");
+		// style.setColor("#333");
 		style.setPaddingRight(10, Style.Unit.PX);
 		style.setProperty("whiteSpace", "nowrap");
 	}
@@ -332,7 +335,8 @@ public class Toolbar extends FlowPanel {
 	public void highlightButton(String key) {
 		// Deactivate the currently active button
 		if (activeButton != null) {
-			activeButton.getElement().getStyle().setColor("#333"); // Reset color
+			// activeButton.getElement().getStyle().setColor("#333"); // Reset color
+			activeButton.getElement().getStyle().clearColor();
 			activeButton.getElement().getStyle().setBackgroundColor(null);
 		}
 
@@ -340,7 +344,7 @@ public class Toolbar extends FlowPanel {
 		Label newActiveButton = highlightableButtons.get(key);
 		if (newActiveButton != null) {
 			newActiveButton.getElement().getStyle().setColor("#007bff"); // Active color
-			newActiveButton.getElement().getStyle().setBackgroundColor("#e6f7ff");
+			// newActiveButton.getElement().getStyle().setBackgroundColor("#e6f7ff");
 			activeButton = newActiveButton;
 		}
 	}

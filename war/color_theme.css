@@ -1,0 +1,55 @@
+ body[color_theme="darkTheme"] .verticalPanel,
+ body[color_theme="darkTheme"] .palette-container,
+ body[color_theme="darkTheme"] .gwt-MenuBar,
+ body[color_theme="darkTheme"] .gwt-MenuBarPopup,
+ body[color_theme="darkTheme"] .gwt-MenuItem,
+ body[color_theme="darkTheme"] .gwt-PopupPanel,
+ body[color_theme="darkTheme"] .topButton,
+ body[color_theme="darkTheme"] .toolbar {
+ 	background: #212529;
+ 	color: white;
+ 	border-color: #4c4a4a;
+ }
+
+ body[color_theme="darkTheme"] .gwt-MenuItem-selected {
+ 	background: #383737;
+ 	color: #007bff;
+ }
+
+ body[color_theme="lightTheme"] .gwt-MenuItem-selected {
+ 	background: #e8dada;
+ 	color: #007bff;
+ }
+
+
+ body[color_theme="darkTheme"] .menuPopupTopLeft,
+ body[color_theme="darkTheme"] .menuPopupTopCenter,
+ body[color_theme="darkTheme"] .menuPopupTopRight,
+ body[color_theme="darkTheme"] .menuPopupBottomLeft,
+ body[color_theme="darkTheme"] .menuPopupBottomCenter,
+ body[color_theme="darkTheme"] .menuPopupBottomRight,
+ body[color_theme="darkTheme"] .menuPopupMiddleLeft,
+ body[color_theme="darkTheme"] .menuPopupMiddleRight {
+ 	background: #4c4a4a;
+ }
+
+
+ body[color_theme="lightTheme"] .verticalPanel {
+ 	background: #ffffff;
+ 	color: black;
+ }
+
+ body[color_theme="lightTheme"] .toolbar,
+ body[color_theme="lightTheme"] .palette-container {
+ 	background: #f8f8f8;
+ 	color: black;
+ }
+
+ body[color_theme="lightTheme"] .gwt-MenuBar,
+ body[color_theme="lightTheme"] .gwt-MenuBarPopup,
+ body[color_theme="lightTheme"] .gwt-MenuBarPopup .menuPopupMiddleCenter {
+ 	background: #e3e8f3;
+ 	color: black;
+ }
+
+ /* url(images/hborder.png) repeat-x 0px -2003px; */
