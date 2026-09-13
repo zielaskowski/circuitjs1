@@ -9,7 +9,14 @@
 ## fork purpose
 
 This fork purpose is to refresh gradle installation to newest version of toolchains as of 2026
-and add these futeres:
+and add these features:
+
+### switch color theme
+
+Added option `CircuitJS1.setColorTheme("lighe"|"dark")` to switch color theme.
+(something similar to *white background* in *option* menu) but including all
+elements of UI.'white background' in *option* menu has precedence before
+`setColorTheme` is fully compatible backward.
 
 ### kioskMode
 
