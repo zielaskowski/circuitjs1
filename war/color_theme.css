@@ -5,10 +5,20 @@
  body[color_theme="darkTheme"] .gwt-MenuItem,
  body[color_theme="darkTheme"] .gwt-PopupPanel,
  body[color_theme="darkTheme"] .topButton,
+ body[color_theme="darkTheme"] .gwt-Button,
+ body[color_theme="darkTheme"] .gwt-DialogBox .Caption,
+ body[color_theme="darkTheme"] .dialogTopLeft,
+ body[color_theme="darkTheme"] .dialogTopCenter,
+ body[color_theme="darkTheme"] .dialogTopRight,
  body[color_theme="darkTheme"] .toolbar {
  	background: #212529;
- 	color: white;
- 	border-color: #4c4a4a;
+ 	color: #c1aea1;
+ 	border-color: #000;
+ }
+
+ body[color_theme="darkTheme"] .gwt-TextBox {
+ 	background: #000000;
+ 	color: #c1aea1;
  }
 
  body[color_theme="darkTheme"] .gwt-MenuItem-selected {
@@ -29,8 +39,15 @@
  body[color_theme="darkTheme"] .menuPopupBottomCenter,
  body[color_theme="darkTheme"] .menuPopupBottomRight,
  body[color_theme="darkTheme"] .menuPopupMiddleLeft,
- body[color_theme="darkTheme"] .menuPopupMiddleRight {
+ body[color_theme="darkTheme"] .menuPopupMiddleRight,
+ body[color_theme="darkTheme"] .dialogMiddleLeft,
+ body[color_theme="darkTheme"] .dialogMiddleCenter,
+ body[color_theme="darkTheme"] .dialogMiddleRight,
+ body[color_theme="darkTheme"] .dialogBottomLeft,
+ body[color_theme="darkTheme"] .dialogBottomCenter,
+ body[color_theme="darkTheme"] .dialogBottomRight {
  	background: #4c4a4a;
+ 	color: #c1aea1;
  }
 
 
