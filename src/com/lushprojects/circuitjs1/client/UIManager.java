@@ -29,6 +29,7 @@ import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -161,8 +162,11 @@ public class UIManager {
 
 		layoutPanel = new DockLayoutPanel(Unit.PX);
 
+		RootPanel.getBodyElement().setAttribute("color_theme", "lightTheme");
+
 		app.menus = menus = new Menus(app);
 		menus.init();
+
 		app.dumpTypeMap.put(403, "ScopeElm");
 		app.xmlDumpTypeMap.put("Scope", "ScopeElm");
 
@@ -247,6 +251,7 @@ public class UIManager {
 		DOM.appendChild(layoutPanel.getElement(), topPanelCheckboxLabel);
 
 		toolbar = new Toolbar();
+		toolbar.setStyleName("toolbar");
 		toolbar.setEuroResistors(euroSetting);
 		MenuBar menuBar = menus.menuBar;
 		if (!hideMenu)
@@ -895,11 +900,16 @@ public class UIManager {
 	}
 
 	void switchColorTheme(boolean color) {
+		String theme = color ? "lightTheme" : "darkTheme";
 		menus.printableCheckItem.setState(color);
 		int i;
+		// redraw oscilloscopes
 		for (i = 0; i < scopeManager.scopeCount; i++)
 			scopeManager.scopes[i].setRect(scopeManager.scopes[i].rect);
 		setOptionInStorage("whiteBackground", color);
+		RootPanel.getBodyElement().setAttribute("color_theme", theme);
+		Scrollbar.setTheme(color);
+		Scrollbar.redrawAll();
 		updateCircuit();
 	}
 
