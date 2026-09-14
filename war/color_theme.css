@@ -7,12 +7,19 @@
  body[color_theme="darkTheme"] .topButton,
  body[color_theme="darkTheme"] .gwt-Button,
  body[color_theme="darkTheme"] .gwt-DialogBox .Caption,
+ body[color_theme="darkTheme"] .gwt-DialogBox .gwt-ListBox,
  body[color_theme="darkTheme"] .dialogTopLeft,
  body[color_theme="darkTheme"] .dialogTopCenter,
  body[color_theme="darkTheme"] .dialogTopRight,
  body[color_theme="darkTheme"] .toolbar {
  	background: #212529;
  	color: #c1aea1;
+ 	border-color: #000;
+ }
+
+ body[color_theme="darkTheme"] .gwt-MenuItem-disabled {
+ 	background: #212529;
+ 	color: #4c443f;
  	border-color: #000;
  }
 
