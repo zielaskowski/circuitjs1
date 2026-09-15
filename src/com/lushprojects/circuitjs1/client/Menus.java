@@ -61,6 +61,7 @@ public class Menus {
 	CheckboxMenuItem noEditCheckItem;
 	CheckboxMenuItem mouseWheelEditCheckItem;
 	CheckboxMenuItem toolbarCheckItem;
+	CheckboxMenuItem labelElmCheckItem;
 	MenuBar elmMenuBar;
 	MenuItem elmEditMenuItem;
 	MenuItem elmCutMenuItem;
@@ -235,6 +236,7 @@ public class Menus {
 		m.addItem(euroResistorCheckItem = new CheckboxMenuItem(Locale.LS("European Resistors")));
 		m.addItem(euroGatesCheckItem = new CheckboxMenuItem(Locale.LS("IEC Gates")));
 		m.addItem(printableCheckItem = new CheckboxMenuItem(Locale.LS("White Background")));
+		m.addItem(labelElmCheckItem = new CheckboxMenuItem(Locale.LS("Show Element Labels")));
 
 		m.addItem(conventionCheckItem = new CheckboxMenuItem(Locale.LS("Conventional Current Motion")));
 		m.addItem(noEditCheckItem = new CheckboxMenuItem(Locale.LS("Disable Editing")));
@@ -363,25 +365,20 @@ public class Menus {
 				SafeHtmlUtils.fromTrustedString(
 						CheckboxMenuItem.checkBoxHtml + Locale.LS("&nbsp;</div>Logic Gates, Input and Output")),
 				gateMenuBar);
-
 		MenuBar chipMenuBar = new MenuBar(true);
+
+		// @formatter:off
 		makeClassCheckItems(chipMenuBar, new String[] { "Add D Flip-Flop", "DFlipFlopElm", "Add JK Flip-Flop",
 				"JKFlipFlopElm", "Add T Flip-Flop", "TFlipFlopElm", "Add 7 Segment LED", "SevenSegElm",
 				"Add 7 Segment Decoder", "SevenSegDecoderElm", "Add Multiplexer", "MultiplexerElm", "Add Demultiplexer",
 				"DeMultiplexerElm", "Add SIPO shift register", "SipoShiftElm", "Add PISO shift register",
 				"PisoShiftElm", "Add Counter", "CounterElm", "Add Counter w/ Load", "Counter2Elm", "Add Ring Counter",
 				"DecadeElm", "Add Latch/Register", "LatchElm", "Add Sequence generator", "SeqGenElm", "Add Adder",
-				"FullAdderElm", "Add Half Adder", "HalfAdderElm", "Add Custom Logic", "UserDefinedLogicElm", // don't
-																												// change
-																												// this,
-																												// it
-																												// will
-																												// break
-																												// people's
-																												// saved
-																												// shortcuts
+				"FullAdderElm", "Add Half Adder", "HalfAdderElm", "Add Custom Logic",
+				"UserDefinedLogicElm", // don't change this, it will break people's saved shortcuts
 				"Add Static RAM", "SRAMElm", "Add ROM", "ROMElm", "Add Bus Transceiver", "BusTransceiverElm",
 				"Add Bus Splitter", "BusSplitterElm" });
+		// @formatter:on
 		mainMenuBar.addItem(
 				SafeHtmlUtils.fromTrustedString(CheckboxMenuItem.checkBoxHtml + Locale.LS("&nbsp;</div>Digital Chips")),
 				chipMenuBar);
@@ -459,12 +456,12 @@ public class Menus {
 		return new MenuItem(SafeHtmlUtils.fromTrustedString(sn), cmd);
 	}
 
+// @formatter:off
 	MenuItem iconMenuItem(String icon, String text, Command cmd) {
-		String icoStr = "<i class=\"cirjsicon-" + icon + "\"></i>&nbsp;" + Locale.LS(text); // <i
-																							// class="cirjsicon-"></i>&nbsp;
+		String icoStr = "<i class=\"cirjsicon-" + icon + "\"></i>&nbsp;" + Locale.LS(text); // <i class="cirjsicon-"></i>&nbsp;
 		return new MenuItem(SafeHtmlUtils.fromTrustedString(icoStr), cmd);
 	}
-
+// @formatter:on
 	CheckboxMenuItem getClassCheckItem(String s, String t) {
 		return sim.ui.getClassCheckItem(s, t);
 	}

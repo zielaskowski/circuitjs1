@@ -103,6 +103,9 @@ public abstract class CircuitElm implements Editable {
 	public boolean selected;
 	boolean inComposite;
 
+	// element labels
+	String label = "";
+
 	// abstract int getDumpType();
 	int getDumpType() {
 		return 0;
@@ -232,6 +235,7 @@ public abstract class CircuitElm implements Editable {
 		flags = getDefaultFlags();
 		allocNodes();
 		initBoundingBox();
+		label = getLabelSeq();
 	}
 
 	// create element between xa,ya and xb,yb from undump
@@ -243,6 +247,7 @@ public abstract class CircuitElm implements Editable {
 		flags = f;
 		allocNodes();
 		initBoundingBox();
+		label = getLabelSeq();
 	}
 
 	void initBoundingBox() {
@@ -1425,6 +1430,45 @@ public abstract class CircuitElm implements Editable {
 	}
 
 	public void setEditValue(int n, EditInfo ei) {
+	}
+
+	String getLabelPrefix() {
+		return null;
+	}
+
+	String getLabelSeq() {
+		return getLabelSeq("");
+	}
+
+	String getLabelSeq(String lab) {
+		// scan for next available label
+		// format is R1, R2, C4 etc.
+		// ignore if label is not initialized
+		String prefix = getLabelPrefix();
+		if (prefix == null)
+			return "";
+		Vector<String> elmNames = new Vector<>();
+		String tryLabel;
+		for (CircuitElm ce : app.elmList) {
+			if (ce.getDumpType() == this.getDumpType() && !ce.label.isEmpty()) {
+				elmNames.add(ce.label);
+			}
+		}
+		// new label from edit
+		// just check if unique
+		if (!lab.isEmpty()) {
+			if (!elmNames.contains(lab))
+				return lab;
+			else
+				prefix = lab + "_";
+		}
+		for (int n = 1;; n++) {
+			tryLabel = prefix + String.valueOf(n);
+			if (!elmNames.contains(tryLabel)) {
+				break;
+			}
+		}
+		return (tryLabel);
 	}
 
 	// are n1 and n2 connected by this element? this is used to determine
