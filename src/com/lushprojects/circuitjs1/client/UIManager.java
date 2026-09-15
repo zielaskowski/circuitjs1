@@ -108,6 +108,7 @@ public class UIManager {
 
 	void init() {
 		boolean printable = false;
+		boolean showLabel = false;
 		boolean convention = true;
 		boolean euroRes = false;
 		boolean usRes = false;
@@ -147,6 +148,7 @@ public class UIManager {
 			currentColor = qp.getValue("currentColor");
 			mouseModeReq = qp.getValue("mouseMode");
 			hideInfoBox = qp.getBooleanValue("hideInfoBox", false);
+			showLabel = qp.getBooleanValue("showLabel", false);
 		} catch (Exception e) {
 			app.console("Exception: " + e);
 		}
@@ -200,6 +202,11 @@ public class UIManager {
 
 		menus.dotsCheckItem.setState(true);
 		menus.voltsCheckItem.setState(true);
+		menus.showValuesCheckItem.setCommand(new Command() {
+			public void execute() {
+				menus.labelElmCheckItem.setEnabled(menus.showValuesCheckItem.getState());
+			}
+		});
 		menus.showValuesCheckItem.setState(true);
 		menus.toolbarCheckItem.setState(!hideMenu && !noEditing && !hideSidebar && height > 700);
 		menus.crossHairCheckItem.setState(getOptionFromStorage("crossHair", false));
@@ -227,6 +234,13 @@ public class UIManager {
 			}
 		});
 		menus.printableCheckItem.setState(printable);
+		menus.labelElmCheckItem.setCommand(new Command() {
+			public void execute() {
+				setOptionInStorage("showLabel", menus.labelElmCheckItem.getState());
+				// app.repaint();
+			}
+		});
+		menus.labelElmCheckItem.setState(showLabel);
 
 		menus.conventionCheckItem.setCommand(new Command() {
 			public void execute() {
