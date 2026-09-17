@@ -13,7 +13,7 @@
  body[color_theme="darkTheme"] .dialogTopRight,
  body[color_theme="darkTheme"] .toolbar {
  	background: #212529;
- 	color: #c1aea1;
+ 	color: #e0dada;
  	border-color: #000;
  }
 
@@ -25,7 +25,7 @@
 
  body[color_theme="darkTheme"] .gwt-TextBox {
  	background: #000000;
- 	color: #c1aea1;
+ 	color: #e0dada;
  }
 
  body[color_theme="darkTheme"] .gwt-MenuItem-selected {
@@ -54,7 +54,7 @@
  body[color_theme="darkTheme"] .dialogBottomCenter,
  body[color_theme="darkTheme"] .dialogBottomRight {
  	background: #4c4a4a;
- 	color: #c1aea1;
+ 	color: #e0dada;
  }
 
 
