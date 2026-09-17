@@ -6,7 +6,17 @@
   <em>Electronic Circuit Simulator in the Browser</em>
 </p>
 
-this fork purpose is to refresh gradle installation to newest version of toolchains as of 2026.
+## fork purpose
+
+This fork purpose is to refresh gradle installation to newest version of toolchains as of 2026
+and add these futeres:
+
+### kioskMode
+
+Added option `CircuitJS1.setKioskMode(true|false)` to switch to kioskMode
+(equivalent to ?hideMenu=true&hideSidebar=true) but in runtime without
+interrupting simulation. URL parameter have precedence over `setKioskMode` during init
+and is fully compatible backward.
 
 ## Introduction
 
@@ -126,7 +136,7 @@ Just for reference the files should look like this
 
 *(replace the podman command with docker if you prefere docker)*
 
-- To build Docker image using podman:
+- To build Docker image using podman: 
 
 ```
 podman build -f circuitjs1.Containerfile -t circuitjs1:latest
@@ -145,7 +155,7 @@ CircuitJS1 should be accessable at: http://localhost:8000/circuitjs.html
 
 (replace the podman command with docker if you prefere docker)
 
-- To build the development Docker image using podman:
+- To build the development Docker image using podman: 
 
 ```
 podman build -f dev-start.Containerfile -t circuitjs1-dev:latest
