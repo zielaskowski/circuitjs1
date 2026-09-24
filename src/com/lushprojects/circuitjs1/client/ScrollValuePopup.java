@@ -110,10 +110,9 @@ public class ScrollValuePopup extends PopupPanel implements MouseOutHandler, Mou
 		inf = myElm.getEditInfo(0);
 		double currentvalue = inf.value;
 		for (int i = 0; i < nvalues + 1; i++) {
-			if (CircuitElm.getShortUnitText(currentvalue, "") == CircuitElm.getShortUnitText(values[i], "")) { // match
-																												// to an
-																												// existing
-																												// value
+
+			if (CircuitElm.getShortUnitText(currentvalue, "") == CircuitElm.getShortUnitText(values[i], "")) {
+				// match to an existing value
 				values[i] = currentvalue; // Just in case it isn't 100% identical
 				currentidx = i;
 				break;
