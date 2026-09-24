@@ -182,7 +182,7 @@ public class ScrollValuePopup extends PopupPanel implements MouseOutHandler, Mou
 	// close(true);
 	// }
 
-	static final int scale = 6;
+	static final int scale = 1;
 
 	public void doDeltaY(int dy) {
 		deltaY += (dy / (double) getDevicePixelRatio());
