@@ -1,6 +1,6 @@
-/*    
+/*
     Copyright (C) Paul Falstad and Iain Sharp
-    
+
     This file is part of CircuitJS1.
 
     CircuitJS1 is free software: you can redistribute it and/or modify
@@ -23,161 +23,219 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Document;
 import com.lushprojects.circuitjs1.client.util.Locale;
 
-    class InductorElm extends CircuitElm {
+class InductorElm extends CircuitElm {
+	String getLabelPrefix() {
+		return "L";
+	}
+
 	Inductor ind;
 	double inductance;
 	double initialCurrent;
 	double saturationCurrent; // 0 = disabled (linear)
+
 	public InductorElm(int xx, int yy) {
-	    super(xx, yy);
-	    ind = new Inductor(sim);
-	    inductance = 1;
-	    ind.setup(inductance, current, flags, saturationCurrent);
+		super(xx, yy);
+		ind = new Inductor(sim);
+		inductance = 1;
+		ind.setup(inductance, current, flags, saturationCurrent);
 	}
-	public InductorElm(int xa, int ya, int xb, int yb, int f,
-		    StringTokenizer st) {
-	    super(xa, ya, xb, yb, f);
-	    ind = new Inductor(sim);
-	    inductance = new Double(st.nextToken()).doubleValue();
-	    current = new Double(st.nextToken()).doubleValue();
-	    try {
-		initialCurrent = new Double(st.nextToken()).doubleValue();
-		saturationCurrent = new Double(st.nextToken()).doubleValue();
-	    } catch (Exception e) {}
-	    ind.setup(inductance, current, flags, saturationCurrent);
+
+	public InductorElm(int xa, int ya, int xb, int yb, int f, StringTokenizer st) {
+		super(xa, ya, xb, yb, f);
+		ind = new Inductor(sim);
+		inductance = new Double(st.nextToken()).doubleValue();
+		current = new Double(st.nextToken()).doubleValue();
+		try {
+			initialCurrent = new Double(st.nextToken()).doubleValue();
+			saturationCurrent = new Double(st.nextToken()).doubleValue();
+		} catch (Exception e) {
+		}
+		try {
+			label = st.nextToken();
+		} catch (java.util.NoSuchElementException e) {
+			label = getLabelSeq();
+		}
+		ind.setup(inductance, current, flags, saturationCurrent);
 	}
-	int getDumpType() { return 'l'; }
+
+	int getDumpType() {
+		return 'l';
+	}
+
 	String dump() {
-	    return super.dump() + " " + inductance + " " + current + " " + initialCurrent + " " + saturationCurrent;
+		return super.dump() + " " + inductance + " " + current + " " + initialCurrent + " " + saturationCurrent + label;
 	}
-	
-        void dumpXml(Document doc, Element elem) {
-            super.dumpXml(doc, elem);
-            XMLSerializer.dumpAttr(elem, "l", inductance);
-            XMLSerializer.dumpAttr(elem, "ic", initialCurrent);
-            if (saturationCurrent != 0)
-                XMLSerializer.dumpAttr(elem, "isat", saturationCurrent);
-        }
 
-        void dumpXmlState(Document doc, Element elem) {
-            XMLSerializer.dumpAttr(elem, "i", current);
-        }
+	void dumpXml(Document doc, Element elem) {
+		super.dumpXml(doc, elem);
+		XMLSerializer.dumpAttr(elem, "l", inductance);
+		XMLSerializer.dumpAttr(elem, "ic", initialCurrent);
+		if (saturationCurrent != 0)
+			XMLSerializer.dumpAttr(elem, "isat", saturationCurrent);
+		if (!label.isEmpty())
+			XMLSerializer.dumpAttr(elem, "lab", label);
+	}
 
-        void undumpXml(XMLDeserializer xml) {
-            super.undumpXml(xml);
-            inductance = xml.parseDoubleAttr("l", inductance);
-            initialCurrent = xml.parseDoubleAttr("ic", initialCurrent);
-            current = xml.parseDoubleAttr("i", current);
-            saturationCurrent = xml.parseDoubleAttr("isat", saturationCurrent);
-	    ind.setup(inductance, current, flags, saturationCurrent);
-        }
+	void dumpXmlState(Document doc, Element elem) {
+		XMLSerializer.dumpAttr(elem, "i", current);
+	}
+
+	void undumpXml(XMLDeserializer xml) {
+		super.undumpXml(xml);
+		inductance = xml.parseDoubleAttr("l", inductance);
+		initialCurrent = xml.parseDoubleAttr("ic", initialCurrent);
+		current = xml.parseDoubleAttr("i", current);
+		saturationCurrent = xml.parseDoubleAttr("isat", saturationCurrent);
+		try {
+			label = xml.parseStringAttr("lab", label);
+		} catch (java.util.NoSuchElementException e) {
+			label = "";
+		}
+		ind.setup(inductance, current, flags, saturationCurrent);
+	}
 
 	void setPoints() {
-	    super.setPoints();
-	    calcLeads(32);
-	}
-	void draw(Graphics g) {
-	    double v1 = volts[0];
-	    double v2 = volts[1];
-	    int i;
-	    int hs = 8;
-	    setBbox(point1, point2, hs);
-	    draw2Leads(g);
-	    setPowerColor(g, false);
-	    drawCoil(g, 8, lead1, lead2, v1, v2);
-	    if (showValues()) {
-		String s = getShortUnitText(inductance, "H");
-		drawValues(g, s, hs);
-	    }
-	    doDots(g);
-	    drawPosts(g);
-	}
-	void reset() {
-	    volts[0] = volts[1] = curcount = 0;
-	    current = initialCurrent;
-	    ind.resetTo(initialCurrent);
-	}
-	void stamp() { ind.stamp(nodes[0], nodes[1]); }
-	void startIteration() {
-	    ind.startIteration(volts[0]-volts[1]);
-	}
-	boolean nonLinear() { return ind.nonLinear(); }
-	void calculateCurrent() {
-	    double voltdiff = volts[0]-volts[1];
-	    current = ind.calculateCurrent(voltdiff);
-	}
-	void doStep() {
-	    double voltdiff = volts[0]-volts[1];
-	    ind.doStep(voltdiff);
-	}
-	void getInfo(String arr[]) {
-	    arr[0] = (saturationCurrent > 0) ? "inductor (sat)" : "inductor";
-	    getBasicInfo(arr);
-	    arr[3] = "L = " + getUnitText(inductance, "H");
-	    arr[4] = "P = " + getUnitText(getPower(), "W");
-	    if (saturationCurrent > 0) {
-		double lEff = ind.calcEffectiveInductance(current);
-		arr[5] = "Leff = " + getUnitText(lEff, "H");
-		arr[6] = "Isat = " + getUnitText(saturationCurrent, "A");
-	    }
+		super.setPoints();
+		calcLeads(32);
 	}
 
-        @Override
-        String getScopeText(int v) {
-            return Locale.LS("inductor") + ", " + getUnitText(inductance, "H");
-        }
+	void draw(Graphics g) {
+		double v1 = volts[0];
+		double v2 = volts[1];
+		int i;
+		int hs = 8;
+		setBbox(point1, point2, hs);
+		draw2Leads(g);
+		setPowerColor(g, false);
+		drawCoil(g, 8, lead1, lead2, v1, v2);
+		if (showValues()) {
+			String s = getShortUnitText(inductance, "H");
+			if (app.menus.labelElmCheckItem.getState()) {
+				drawValues(g, label + "=" + s, hs);
+			} else
+				drawValues(g, s, hs);
+		}
+		doDots(g);
+		drawPosts(g);
+	}
+
+	void reset() {
+		volts[0] = volts[1] = curcount = 0;
+		current = initialCurrent;
+		ind.resetTo(initialCurrent);
+	}
+
+	void stamp() {
+		ind.stamp(nodes[0], nodes[1]);
+	}
+
+	void startIteration() {
+		ind.startIteration(volts[0] - volts[1]);
+	}
+
+	boolean nonLinear() {
+		return ind.nonLinear();
+	}
+
+	void calculateCurrent() {
+		double voltdiff = volts[0] - volts[1];
+		current = ind.calculateCurrent(voltdiff);
+	}
+
+	void doStep() {
+		double voltdiff = volts[0] - volts[1];
+		ind.doStep(voltdiff);
+	}
+
+	void getInfo(String arr[]) {
+		arr[0] = (saturationCurrent > 0) ? "inductor (sat)" : "inductor";
+		getBasicInfo(arr);
+		arr[3] = "L = " + getUnitText(inductance, "H");
+		arr[4] = "P = " + getUnitText(getPower(), "W");
+		if (saturationCurrent > 0) {
+			double lEff = ind.calcEffectiveInductance(current);
+			arr[5] = "Leff = " + getUnitText(lEff, "H");
+			arr[6] = "Isat = " + getUnitText(saturationCurrent, "A");
+		}
+		arr[5] = "label = " + label;
+	}
+
+	@Override
+	String getScopeText(int v) {
+		return Locale.LS("inductor") + ", " + getUnitText(inductance, "H");
+	}
 
 	public EditInfo getEditInfo(int n) {
-	    if (n == 0)
-		return new EditInfo("Inductance (H)", inductance, 1e-2, 10).setPositive();
-	    if (n == 1) {
-		EditInfo ei = new EditInfo("", 0, -1, -1);
-		ei.checkbox = new Checkbox("Trapezoidal Approximation",
-					   ind.isTrapezoidal());
-		return ei;
-	    }
-            if (n == 2)
-                return new EditInfo("Initial Current (on Reset) (A)", initialCurrent);
-	    if (n == 3)
-		return new EditInfo("Saturation Current (A) (0=none)", saturationCurrent);
-	    return null;
+		if (n == 0)
+			return new EditInfo("Inductance (H)", inductance, 1e-2, 10).setPositive();
+		if (n == 1) {
+			EditInfo ei = new EditInfo("", 0, -1, -1);
+			ei.checkbox = new Checkbox("Trapezoidal Approximation", ind.isTrapezoidal());
+			return ei;
+		}
+		if (n == 2)
+			return new EditInfo("Initial Current (on Reset) (A)", initialCurrent);
+		if (n == 3)
+			return new EditInfo("Saturation Current (A) (0=none)", saturationCurrent);
+		if (n == 4)
+			return new EditInfo("Edit Label", label);
+		return null;
 	}
 
 	public void setEditValue(int n, EditInfo ei) {
-	    if (n == 0)
-		inductance = ei.value;
-	    if (n == 1) {
-		if (ei.checkbox.getState())
-		    flags &= ~Inductor.FLAG_BACK_EULER;
-		else
-		    flags |= Inductor.FLAG_BACK_EULER;
-	    }
-            if (n == 2)
-                initialCurrent = ei.value;
-	    if (n == 3) {
-		if (ei.value >= 0)
-		    saturationCurrent = ei.value;
-		else
-		    ei.setError("must be >= 0");
-	    }
-	    ind.setup(inductance, current, flags, saturationCurrent);
+		if (n == 0)
+			inductance = ei.value;
+		if (n == 1) {
+			if (ei.checkbox.getState())
+				flags &= ~Inductor.FLAG_BACK_EULER;
+			else
+				flags |= Inductor.FLAG_BACK_EULER;
+		}
+		if (n == 2)
+			initialCurrent = ei.value;
+		if (n == 3) {
+			if (ei.value >= 0)
+				saturationCurrent = ei.value;
+			else
+				ei.setError("must be >= 0");
+		}
+		if (n == 4) {
+			String newLabel = ei.textf.getText();
+			if (newLabel.equals(label)) {
+				return;
+			} else {
+				label = getLabelSeq(label);
+			}
+		}
+		ind.setup(inductance, current, flags, saturationCurrent);
 	}
-	
-	int getShortcut() { return 'L'; }
-	public double getInductance() { return inductance; }
+
+	int getShortcut() {
+		return 'L';
+	}
+
+	public double getInductance() {
+		return inductance;
+	}
+
 	void setInductance(double l) {
-	    inductance = l;
-	    ind.setup(inductance, current, flags, saturationCurrent);
+		inductance = l;
+		ind.setup(inductance, current, flags, saturationCurrent);
 	}
+
 	void setSaturationCurrent(double isat) {
-	    saturationCurrent = isat;
-	    ind.setup(inductance, current, flags, saturationCurrent);
+		saturationCurrent = isat;
+		ind.setup(inductance, current, flags, saturationCurrent);
 	}
-	double getSaturationCurrent() { return saturationCurrent; }
+
+	double getSaturationCurrent() {
+		return saturationCurrent;
+	}
+
 	boolean validate() {
-	    FindPathInfo fpi = new FindPathInfo(FindPathInfo.INDUCT, this, getNode(1), sim);
-	    if (!fpi.findPath(getNode(0)))
-		reset();
-	    return true;
+		FindPathInfo fpi = new FindPathInfo(FindPathInfo.INDUCT, this, getNode(1), sim);
+		if (!fpi.findPath(getNode(0)))
+			reset();
+		return true;
 	}
-    }
+}

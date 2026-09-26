@@ -1,4 +1,4 @@
-Element class midfication to add Element labeling.
+Element class modification to add Element labeling.
 
 
 		
@@ -14,7 +14,7 @@ ResistorElm(){
 		try {
 			label = st.nextToken();
 		} catch (java.util.NoSuchElementException e) {
-			label = "";
+			label = getLabelSeq();
 		}
 }
 
@@ -51,14 +51,16 @@ void draw(){
 
 
 public EditInfo getEditInfo(int n) {
-	if (n == 0)
+	if (n == 1)
 		return new EditInfo("Edit Label", label);
 ....
 }
 			
 
 public void setEditValue(int n, EditInfo ei) {
-		if (n == 0) {
+		if (n == 0)
+			resistance = (ei.value <= 0) ? 1e-9 : ei.value;
+		if (n == 1) {
 			String newLabel = ei.textf.getText();
 			if (newLabel.equals(label)) {
 				return;
@@ -66,8 +68,6 @@ public void setEditValue(int n, EditInfo ei) {
 				label = getLabelSeq(label);
 			}
 		}
-		if (n == 1)
-			resistance = (ei.value <= 0) ? 1e-9 : ei.value;
 }
 
 			

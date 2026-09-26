@@ -1450,7 +1450,8 @@ public abstract class CircuitElm implements Editable {
 		Vector<String> elmNames = new Vector<>();
 		String tryLabel;
 		for (CircuitElm ce : app.elmList) {
-			if (ce.getDumpType() == this.getDumpType() && !ce.label.isEmpty()) {
+			// if (ce.getDumpType() == this.getDumpType() && !ce.label.isEmpty()) {
+			if (!ce.label.isEmpty()) {
 				elmNames.add(ce.label);
 			}
 		}
