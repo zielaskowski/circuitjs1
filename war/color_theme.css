@@ -1,0 +1,79 @@
+ body[color_theme="darkTheme"] .verticalPanel,
+ body[color_theme="darkTheme"] .palette-container,
+ body[color_theme="darkTheme"] .gwt-MenuBar,
+ body[color_theme="darkTheme"] .gwt-MenuBarPopup,
+ body[color_theme="darkTheme"] .gwt-MenuItem,
+ body[color_theme="darkTheme"] .gwt-PopupPanel,
+ body[color_theme="darkTheme"] .topButton,
+ body[color_theme="darkTheme"] .gwt-Button,
+ body[color_theme="darkTheme"] .gwt-DialogBox .Caption,
+ body[color_theme="darkTheme"] .gwt-DialogBox .gwt-ListBox,
+ body[color_theme="darkTheme"] .dialogTopLeft,
+ body[color_theme="darkTheme"] .dialogTopCenter,
+ body[color_theme="darkTheme"] .dialogTopRight,
+ body[color_theme="darkTheme"] .toolbar {
+ 	background: #212529;
+ 	color: #e0dada;
+ 	border-color: #000;
+ }
+
+ body[color_theme="darkTheme"] .gwt-MenuItem-disabled {
+ 	background: #212529;
+ 	color: #4c443f;
+ 	border-color: #000;
+ }
+
+ body[color_theme="darkTheme"] .gwt-TextBox {
+ 	background: #000000;
+ 	color: #e0dada;
+ }
+
+ body[color_theme="darkTheme"] .gwt-MenuItem-selected {
+ 	background: #383737;
+ 	color: #007bff;
+ }
+
+ body[color_theme="lightTheme"] .gwt-MenuItem-selected {
+ 	background: #e8dada;
+ 	color: #007bff;
+ }
+
+
+ body[color_theme="darkTheme"] .menuPopupTopLeft,
+ body[color_theme="darkTheme"] .menuPopupTopCenter,
+ body[color_theme="darkTheme"] .menuPopupTopRight,
+ body[color_theme="darkTheme"] .menuPopupBottomLeft,
+ body[color_theme="darkTheme"] .menuPopupBottomCenter,
+ body[color_theme="darkTheme"] .menuPopupBottomRight,
+ body[color_theme="darkTheme"] .menuPopupMiddleLeft,
+ body[color_theme="darkTheme"] .menuPopupMiddleRight,
+ body[color_theme="darkTheme"] .dialogMiddleLeft,
+ body[color_theme="darkTheme"] .dialogMiddleCenter,
+ body[color_theme="darkTheme"] .dialogMiddleRight,
+ body[color_theme="darkTheme"] .dialogBottomLeft,
+ body[color_theme="darkTheme"] .dialogBottomCenter,
+ body[color_theme="darkTheme"] .dialogBottomRight {
+ 	background: #4c4a4a;
+ 	color: #e0dada;
+ }
+
+
+ body[color_theme="lightTheme"] .verticalPanel {
+ 	background: #ffffff;
+ 	color: black;
+ }
+
+ body[color_theme="lightTheme"] .toolbar,
+ body[color_theme="lightTheme"] .palette-container {
+ 	background: #f8f8f8;
+ 	color: black;
+ }
+
+ body[color_theme="lightTheme"] .gwt-MenuBar,
+ body[color_theme="lightTheme"] .gwt-MenuBarPopup,
+ body[color_theme="lightTheme"] .gwt-MenuBarPopup .menuPopupMiddleCenter {
+ 	background: #e3e8f3;
+ 	color: black;
+ }
+
+ /* url(images/hborder.png) repeat-x 0px -2003px; */
