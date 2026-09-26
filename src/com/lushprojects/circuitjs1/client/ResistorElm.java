@@ -25,6 +25,11 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Document;
 
 class ResistorElm extends CircuitElm {
+	// set prefix for element label
+	String getLabelPrefix() {
+		return "R";
+	};
+
 	double resistance;
 
 	public ResistorElm(int xx, int yy) {
@@ -35,6 +40,11 @@ class ResistorElm extends CircuitElm {
 	public ResistorElm(int xa, int ya, int xb, int yb, int f, StringTokenizer st) {
 		super(xa, ya, xb, yb, f);
 		resistance = new Double(st.nextToken()).doubleValue();
+		try {
+			label = st.nextToken();
+		} catch (java.util.NoSuchElementException e) {
+			label = getLabelSeq();
+		}
 	}
 
 	int getDumpType() {
@@ -42,17 +52,24 @@ class ResistorElm extends CircuitElm {
 	}
 
 	String dump() {
-		return super.dump() + " " + resistance;
+		return super.dump() + " " + resistance + label;
 	}
 
 	void dumpXml(Document doc, Element elem) {
 		super.dumpXml(doc, elem);
+		if (!label.isEmpty())
+			XMLSerializer.dumpAttr(elem, "lab", label);
 		XMLSerializer.dumpAttr(elem, "r", resistance);
 	}
 
 	void undumpXml(XMLDeserializer xml) {
 		super.undumpXml(xml);
 		resistance = xml.parseDoubleAttr("r", resistance);
+		try {
+			label = xml.parseStringAttr("lab", label);
+		} catch (java.util.NoSuchElementException e) {
+			label = getLabelSeq();
+		}
 	}
 
 	Point ps3, ps4;
@@ -106,7 +123,11 @@ class ResistorElm extends CircuitElm {
 		g.context.restore();
 		if (showValues()) {
 			String s = getShortUnitText(resistance, "");
-			drawValues(g, s, hs + 2);
+			if (app.menus.labelElmCheckItem.getState()) {
+				drawValues(g, label + "=" + s, hs + 2);
+			} else {
+				drawValues(g, s, hs + 2);
+			}
 		}
 		doDots(g);
 		drawPosts(g);
@@ -130,6 +151,7 @@ class ResistorElm extends CircuitElm {
 		getBasicInfo(arr);
 		arr[3] = "R = " + getUnitText(resistance, Locale.ohmString);
 		arr[4] = "P = " + getUnitText(getPower(), "W");
+		arr[5] = "label = " + label;
 	}
 
 	@Override
@@ -138,14 +160,25 @@ class ResistorElm extends CircuitElm {
 	}
 
 	public EditInfo getEditInfo(int n) {
-		// ohmString doesn't work here on linux
 		if (n == 0)
+			// ohmString doesn't work here on linux
 			return new EditInfo("Resistance (ohms)", resistance, 0, 0);
+		if (n == 1)
+			return new EditInfo("Edit Label", label);
 		return null;
 	}
 
 	public void setEditValue(int n, EditInfo ei) {
-		resistance = (ei.value <= 0) ? 1e-9 : ei.value;
+		if (n == 0)
+			resistance = (ei.value <= 0) ? 1e-9 : ei.value;
+		if (n == 1) {
+			String newLabel = ei.textf.getText();
+			if (newLabel.equals(label)) {
+				return;
+			} else {
+				label = getLabelSeq(newLabel);
+			}
+		}
 	}
 
 	int getShortcut() {

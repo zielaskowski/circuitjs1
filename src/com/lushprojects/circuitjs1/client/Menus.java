@@ -61,6 +61,7 @@ public class Menus {
 	CheckboxMenuItem noEditCheckItem;
 	CheckboxMenuItem mouseWheelEditCheckItem;
 	CheckboxMenuItem toolbarCheckItem;
+	CheckboxMenuItem labelElmCheckItem;
 	MenuBar elmMenuBar;
 	MenuItem elmEditMenuItem;
 	MenuItem elmCutMenuItem;
@@ -235,6 +236,7 @@ public class Menus {
 		m.addItem(euroResistorCheckItem = new CheckboxMenuItem(Locale.LS("European Resistors")));
 		m.addItem(euroGatesCheckItem = new CheckboxMenuItem(Locale.LS("IEC Gates")));
 		m.addItem(printableCheckItem = new CheckboxMenuItem(Locale.LS("White Background")));
+		m.addItem(labelElmCheckItem = new CheckboxMenuItem(Locale.LS("Show Element Labels")));
 
 		m.addItem(conventionCheckItem = new CheckboxMenuItem(Locale.LS("Conventional Current Motion")));
 		m.addItem(noEditCheckItem = new CheckboxMenuItem(Locale.LS("Disable Editing")));
@@ -363,8 +365,8 @@ public class Menus {
 				SafeHtmlUtils.fromTrustedString(
 						CheckboxMenuItem.checkBoxHtml + Locale.LS("&nbsp;</div>Logic Gates, Input and Output")),
 				gateMenuBar);
-
 		MenuBar chipMenuBar = new MenuBar(true);
+
 		// @formatter:off
 		makeClassCheckItems(chipMenuBar, new String[] { "Add D Flip-Flop", "DFlipFlopElm", "Add JK Flip-Flop",
 				"JKFlipFlopElm", "Add T Flip-Flop", "TFlipFlopElm", "Add 7 Segment LED", "SevenSegElm",
