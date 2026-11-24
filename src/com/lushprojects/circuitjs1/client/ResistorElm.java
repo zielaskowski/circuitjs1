@@ -123,7 +123,7 @@ class ResistorElm extends CircuitElm {
 		g.context.restore();
 		if (showValues()) {
 			String s = getShortUnitText(resistance, "");
-			if (app.menus.labelElmCheckItem.getState()) {
+			if (showLabels()) {
 				drawValues(g, label + "=" + s, hs + 2);
 			} else {
 				drawValues(g, s, hs + 2);

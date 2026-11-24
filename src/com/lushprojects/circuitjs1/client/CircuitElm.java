@@ -1603,6 +1603,10 @@ public abstract class CircuitElm implements Editable {
 		return app.menus.showValuesCheckItem.getState();
 	}
 
+	boolean showLabels() {
+		return app.menus.labelElmCheckItem.getState();
+	}
+
 	boolean showPower() {
 		return app.menus.powerCheckItem.getState();
 	}

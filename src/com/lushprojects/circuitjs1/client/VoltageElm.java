@@ -1,6 +1,6 @@
-/*    
+/*
     Copyright (C) Paul Falstad and Iain Sharp
-    
+
     This file is part of CircuitJS1.
 
     CircuitJS1 is free software: you can redistribute it and/or modify
@@ -26,6 +26,11 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Document;
 
 class VoltageElm extends CircuitElm {
+	// set prefix for voltage label
+	String getLabelPrefix() {
+		return "V";
+	}
+
 	static final int FLAG_COS = 2;
 	static final int FLAG_PULSE_DUTY = 4;
 	static final int FLAG_CIRCLE_SYMBOL = 8;
@@ -80,6 +85,11 @@ class VoltageElm extends CircuitElm {
 			// adds more stuff here
 		} catch (Exception e) {
 		}
+		try {
+			label = st.nextToken();
+		} catch (java.util.NoSuchElementException e) {
+			label = getLabelSeq();
+		}
 
 		if ((flags & FLAG_COS) != 0) {
 			flags &= ~FLAG_COS;
@@ -109,8 +119,15 @@ class VoltageElm extends CircuitElm {
 		swapDragEndpoints();
 	}
 
+	String dump() {
+		return super.dump() + " " + maxVoltage + label;
+	}
+
 	void dumpXml(Document doc, Element elem) {
 		super.dumpXml(doc, elem);
+		if (!label.isEmpty()) {
+			XMLSerializer.dumpAttr(elem, "lab", label);
+		}
 		XMLSerializer.dumpAttr(elem, "wf", waveform);
 		if (waveform != WF_DC)
 			XMLSerializer.dumpAttr(elem, "fr", frequency);
@@ -137,6 +154,11 @@ class VoltageElm extends CircuitElm {
 		dutyCycle = xml.parseDoubleAttr("dutyCycle", dutyCycle);
 		riseTime = xml.parseDoubleAttr("riseTime", riseTime);
 		internalResistance = xml.parseDoubleAttr("ir", 0);
+		try {
+			label = xml.parseStringAttr("lab", label);
+		} catch (java.util.NoSuchElementException e) {
+			label = getLabelSeq();
+		}
 	}
 
 	void reset() {
@@ -339,6 +361,7 @@ class VoltageElm extends CircuitElm {
 				s = getShortVoltageText();
 			else if (showF)
 				s = getShortUnitText(frequency, "Hz");
+			s = showLabels() ? label + "=" + s : s;
 			if (s != null) {
 				int hs = (waveform == WF_DC && (flags & FLAG_CIRCLE_SYMBOL) == 0) ? 16 : circleSize;
 				drawValues(g, s, hs);
@@ -501,7 +524,7 @@ class VoltageElm extends CircuitElm {
 		switch (waveform) {
 		case WF_DC:
 		case WF_VAR:
-			arr[0] = "voltage source";
+			arr[0] = "voltageElm source";
 			break;
 		case WF_AC:
 			arr[0] = "A/C source";
@@ -538,6 +561,7 @@ class VoltageElm extends CircuitElm {
 		if (waveform == WF_DC && current != 0 && app.showResistanceInVoltageSources)
 			arr[i++] = "(R = " + getUnitText(maxVoltage / current, Locale.ohmString) + ")";
 		arr[i++] = "P = " + getUnitText(getPower(), "W");
+		arr[i] = "label = " + label;
 	}
 
 	int getFrequencyOffset() {
@@ -570,6 +594,18 @@ class VoltageElm extends CircuitElm {
 		double newDuty = highTime / (highTime + lowTime);
 		setFrequency(newFreq);
 		dutyCycle = newDuty;
+	}
+
+	int lastN() {
+		if (waveform == WF_DC & this instanceof RailElm)
+			return 4;
+		if (waveform == WF_DC)
+			return 6;
+		if (waveform == WF_NOISE)
+			return 5;
+		if (hasTimingOptions())
+			return 10;
+		return 7;
 	}
 
 	public EditInfo getEditInfo(int n) {
@@ -606,9 +642,13 @@ class VoltageElm extends CircuitElm {
 			ei.checkbox = new Checkbox("Circle Symbol", (flags & FLAG_CIRCLE_SYMBOL) != 0);
 			return ei;
 		}
+		if (n == lastN()) {
+			return new EditInfo("Edit Label", label);
+		}
 		int fo = getFrequencyOffset();
-		if (waveform == WF_DC || waveform == WF_NOISE)
+		if (waveform == WF_DC || waveform == WF_NOISE) {
 			return null;
+		}
 		int n2 = n - fo;
 		if (hasTimingOptions()) {
 			// square/pulse: dropdown + freq-or-time + phase + duty-or-time + rise
@@ -722,6 +762,14 @@ class VoltageElm extends CircuitElm {
 			if (n2 == 1) {
 				phaseShift = ei.value * pi / 180;
 				phaseShift = ((phaseShift % (2 * pi)) + 2 * pi) % (2 * pi);
+			}
+		}
+		if (n == lastN()) {
+			String newLabel = ei.textf.getText();
+			if (newLabel.equals(label)) {
+				return;
+			} else {
+				label = getLabelSeq(newLabel);
 			}
 		}
 	}
