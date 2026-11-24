@@ -16,8 +16,9 @@ Show element labels on the circuit. Option can be triggered from menu *options*
 or through url `?showLabel=true`. Elements are automatically labeled
 (for example R1, R2,etc. for resistors). Label can be edited in element edit popup.
 Label is also exposed through JS interface: `Circuitjs1.getElements() ->  getInfo()`
-For now only Resistors, Capacitors and Inductors (each
-element class can be easily extended: just add few lines of code)
+For now only Resistors, Capacitors, Inductors, Voltage, Diodes (each
+element class can be easily extended: just add few lines of code, see
+`elementLabelingMods.txt`)
 
 ## Introduction
 
@@ -137,7 +138,7 @@ Just for reference the files should look like this
 
 *(replace the podman command with docker if you prefere docker)*
 
-- To build Docker image using podman: 
+- To build Docker image using podman:
 
 ```
 podman build -f circuitjs1.Containerfile -t circuitjs1:latest
@@ -156,7 +157,7 @@ CircuitJS1 should be accessable at: http://localhost:8000/circuitjs.html
 
 (replace the podman command with docker if you prefere docker)
 
-- To build the development Docker image using podman: 
+- To build the development Docker image using podman:
 
 ```
 podman build -f dev-start.Containerfile -t circuitjs1-dev:latest
