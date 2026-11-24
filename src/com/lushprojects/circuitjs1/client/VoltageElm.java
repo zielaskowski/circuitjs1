@@ -524,7 +524,7 @@ class VoltageElm extends CircuitElm {
 		switch (waveform) {
 		case WF_DC:
 		case WF_VAR:
-			arr[0] = "voltageElm source";
+			arr[0] = "voltage source";
 			break;
 		case WF_AC:
 			arr[0] = "A/C source";
