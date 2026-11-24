@@ -361,8 +361,8 @@ class VoltageElm extends CircuitElm {
 				s = getShortVoltageText();
 			else if (showF)
 				s = getShortUnitText(frequency, "Hz");
-			s = showLabels() ? label + "=" + s : s;
 			if (s != null) {
+				s = showLabels() ? label + "=" + s : s;
 				int hs = (waveform == WF_DC && (flags & FLAG_CIRCLE_SYMBOL) == 0) ? 16 : circleSize;
 				drawValues(g, s, hs);
 			}
