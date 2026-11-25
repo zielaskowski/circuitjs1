@@ -1,6 +1,6 @@
-/*    
+/*
     Copyright (C) Paul Falstad and Iain Sharp
-    
+
     This file is part of CircuitJS1.
 
     CircuitJS1 is free software: you can redistribute it and/or modify
@@ -82,8 +82,11 @@ class RailElm extends VoltageElm {
 				s = getShortUnitText(v, "V");
 			if (getVoltage() > 0)
 				s = "+" + s;
+			s = showLabels() ? label + "=" + s : s;
 			drawLabeledNode(g, s, point1, lead1);
-		} else {
+		} else
+
+		{
 			drawWaveform(g, point2);
 		}
 	}

@@ -29,6 +29,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.lushprojects.circuitjs1.client.util.Locale;
 
 class DiodeElm extends CircuitElm {
+	// set prefix for element label
+	String getLabelPrefix() {
+		return "D";
+	}
+
 	Diode diode;
 	static final int FLAG_FWDROP = 1;
 	static final int FLAG_MODEL = 2;
@@ -64,6 +69,11 @@ class DiodeElm extends CircuitElm {
 			modelName = model.name;
 			// CirSim.console("model name wparams = " + modelName);
 		}
+		try {
+			label = st.nextToken();
+		} catch (java.util.NoSuchElementException e) {
+			label = getLabelSeq();
+		}
 		setup();
 	}
 
@@ -95,7 +105,7 @@ class DiodeElm extends CircuitElm {
 
 	String dump() {
 		flags |= FLAG_MODEL;
-		return super.dump() + " " + CustomLogicModel.escape(modelName);
+		return super.dump() + " " + CustomLogicModel.escape(modelName) + label;
 	}
 
 	String dumpModel() {
@@ -113,12 +123,19 @@ class DiodeElm extends CircuitElm {
 		if (!(model.builtIn || model.dumped))
 			model.dumpXml(doc);
 		super.dumpXml(doc, elem);
+		if (!label.isEmpty())
+			XMLSerializer.dumpAttr(elem, "lab", label);
 		XMLSerializer.dumpAttr(elem, "mo", modelName);
 	}
 
 	void undumpXml(XMLDeserializer xml) {
 		super.undumpXml(xml);
 		modelName = xml.parseStringAttr("mo", modelName);
+		try {
+			label = xml.parseStringAttr("lab", label);
+		} catch (java.util.NoSuchElementException e) {
+			label = getLabelSeq();
+		}
 		setup();
 	}
 
@@ -203,8 +220,13 @@ class DiodeElm extends CircuitElm {
 		arr[1] = "I = " + getCurrentText(getCurrent());
 		arr[2] = "Vd = " + getVoltageText(getVoltageDiff());
 		arr[3] = "P = " + getUnitText(getPower(), "W");
-		if (model.oldStyle)
+		if (model.oldStyle) {
 			arr[4] = "Vf = " + getVoltageText(model.fwdrop);
+			arr[5] = "label = " + label;
+		} else {
+			arr[4] = "label = " + label;
+		}
+
 	}
 
 	Vector<DiodeModel> models;
@@ -232,6 +254,14 @@ class DiodeElm extends CircuitElm {
 			EditInfo ei = new EditInfo("", 0, -1, -1);
 			ei.button = new Button(Locale.LS("Create New Advanced Model"));
 			return ei;
+		}
+		int nShift = 0;
+		if (this instanceof ZenerElm)
+			nShift = 1;
+		if (model.readOnly)
+			nShift = -1;
+		if (n == 4 + nShift) {
+			return new EditInfo("Edit Label", label);
 		}
 		if (n == 3) {
 			if (model.readOnly)
@@ -266,6 +296,19 @@ class DiodeElm extends CircuitElm {
 			CirSim.diodeModelEditDialog = editDialog;
 			editDialog.show();
 			return;
+		}
+		int nShift = 0;
+		if (this instanceof ZenerElm)
+			nShift = 1;
+		if (model.readOnly)
+			nShift = -1;
+		if (n == 4 + nShift) {
+			String newLabel = ei.textf.getText();
+			if (newLabel.equals(label)) {
+				return;
+			} else {
+				label = getLabelSeq(label);
+			}
 		}
 		if (n == 3) {
 			if (model.readOnly) {
