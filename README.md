@@ -18,6 +18,13 @@ Added option `CircuitJS1.setKioskMode(true|false)` to switch to kioskMode
 interrupting simulation. URL parameter have precedence over `setKioskMode` during init
 and is fully compatible backward.
 
+### switch color theme
+
+Added option `CircuitJS1.setColorTheme("lighe"|"dark")` to switch color theme.
+(something similar to *white background* in *option* menu) but including all
+elements of UI.'white background' in *option* menu has precedence before
+`setColorTheme` is fully compatible backward.
+
 ## Introduction
 
 CircuitJS1 is an electronic circuit simulator that runs in the browser. It was originally written by Paul Falstad as a Java Applet. It was adapted by Iain Sharp to run in the browser using GWT.
